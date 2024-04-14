@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="navbar.css">
+    <title>All Gumball Machines</title>
+  </head>
+  <body>
+    <ul class="topnav">
+        <li><a href="index.html">Home</a></li>
+        <li><a href="add.html">Add</a></li>
+        <li><a href="update.html">Update</a></li>      
+        <li><a class="active" href="findAll.html">All Machines</a></li>
+        <li class="right"><a  href="login.html">Login</a></li>
+    </ul>
+    
+    <h1>Gumball Machines</h1>
+    <ul id="gumballMachineList">
+        <!-- Gumball machines will be displayed here -->
+    </ul>
+
+    <script>
+        // Function to display gumball machines in the UI
+        function displayGumballMachines(gumballMachines) {
+            const gumballMachineList = document.getElementById("gumballMachineList");
+            gumballMachineList.innerHTML = ""; // Clear existing list items
+
+            gumballMachines.forEach(machine => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `ID: ${machine.id}, Count: ${machine.count}`;
+                gumballMachineList.appendChild(listItem);
+            });
+        }
+
+        // Fetch all gumball machines from the backend
+        fetch("http://localhost:8080/gumballs")
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Process the data received from the backend
+                console.log("Gumball machines:", data);
+                // Here you can update your UI to display the gumball machines
+                displayGumballMachines(data);
+            })
+            .catch(error => {
+                console.error("Error fetching gumball machines:", error);
+                // Handle the error appropriately, e.g., display an error message to the user
+                alert("Failed to fetch gumball machines. Please try again later.");
+            });
+    </script>
+  </body>
+
+</html>
